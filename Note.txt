@@ -1,4 +1,4 @@
-Setting up in raspi 3 client :
+#### Setting up in raspi 3 client :
 1. Connect to Wifi
 	- sudo raspi-config
 	- select "Network Options" -> "Wi-fi"
@@ -9,7 +9,10 @@ Setting up in raspi 3 client :
 	- Select "Interfacing Options" -> "P2 SSH"
 	- Enable SSH -> yes
 
-3. Make autorun python script in Raspi 3
+3. install git : "sudo apt-get install git". And clone socket file from github :
+	- https://github.com/mfalfafa/socket-reliability-test.git
+
+4. Make autorun python script in Raspi 3
 	a. Make auto login in Raspi 3 by using this setting :
 	* "sudo raspi-config"
 	* Select "Boot Options" -> "desktop CLI"
@@ -18,4 +21,17 @@ Setting up in raspi 3 client :
 
 	b. Edit "Profile" file :
 	"sudo nano /etc/profile"
-	And add the following command 	: sudo python /home/pi/socket-test/raspi-test/socket-test.py
+	And add the following command 	: sudo python /home/pi/socket-reliability-test/client-x.py.
+	Edit "Profile" file per each raspi.
+
+5. sudo reboot now. After reboot the client-x python file will be executed automatically.
+
+### Setting up PC server :
+1. Install python 3
+2. Run "tcp-server" python file
+
+### Operation :
+1. Run "tcp-server" python file
+2. Boot all raspi3s
+3. And data from all raspi3s will be received by PC server.
+
