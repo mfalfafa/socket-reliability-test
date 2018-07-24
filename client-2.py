@@ -4,7 +4,7 @@ from socket import *
 
 ## Client Socket Communication initialization
 serverIP = '169.254.148.241'    # PC Server IP
-serverPort = 5003               # PC Server Port
+serverPort = 5002               # PC Server Port
 
 n=0
 while 1:

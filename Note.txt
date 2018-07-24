@@ -1,9 +1,21 @@
-##### Make autorun python script in Raspi 3 #####
-1. Make auto login in Raspi 3 by using this setting :
+Setting up in raspi 3 client :
+1. Connect to Wifi
+	- sudo raspi-config
+	- select "Network Options" -> "Wi-fi"
+	- Insert SSID and Password
+
+2. Enable SSH
+	- sudo raspi-config
+	- Select "Interfacing Options" -> "P2 SSH"
+	- Enable SSH -> yes
+
+3. Make autorun python script in Raspi 3
+	a. Make auto login in Raspi 3 by using this setting :
 	* "sudo raspi-config"
 	* Select "Boot Options" -> "desktop CLI"
 	* Select "B2 Console Autologin" -> Ok
 	* Finish
-2. Edit "Profile" file :
+
+	b. Edit "Profile" file :
 	"sudo nano /etc/profile"
 	And add the following command 	: sudo python /home/pi/socket-test/raspi-test/socket-test.py

@@ -6,7 +6,8 @@ from socket import *
 
 # Socket Server Initialization
 serverPort = 5000
-n=10
+# Number of clients
+n=5
 serverSocket = [socket(AF_INET, SOCK_STREAM)]*n
 serverIP = '169.254.148.241'
 for i in range(n):
@@ -17,6 +18,9 @@ for i in range(n):
     print ('success ' + str(i))
 connectionSocket=[0]*n
 thread=[0]*n
+
+# Variables to save data for each client
+client=[0]*n
 
 def main(argv):
     class myThread (threading.Thread):
@@ -41,7 +45,7 @@ def main(argv):
                 # Receives data message from Socket Client
                 msg=connectionSocket[no].recv(1024)
                 msg=msg.decode('ascii')
-                print (msg)
+                # print (msg)
 
                 # Sends ACK message to Client
                 connectionSocket[no].send('ack'.encode('utf-8'))
@@ -49,7 +53,8 @@ def main(argv):
                     try:
                         msg=connectionSocket[no].recv(32)
                         msg=msg.decode('ascii')
-                        #print (msg)
+                        # Get data for each client
+                        client[no]==msg
                     except:
                         print (name + ' is closed!')
                         connectionSocket[no].close()
@@ -57,6 +62,7 @@ def main(argv):
                     if msg=='ok':
                         connectionSocket[no].close()
                         break
+                print (client)
         except KeyboardInterrupt:
             pass
         except Exception as e:
