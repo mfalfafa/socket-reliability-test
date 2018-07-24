@@ -27,7 +27,7 @@ while 1:
         while 1:
             msg=clientSocket.recv(32)
             msg=msg.decode('ascii')
-            print (msg)
+            #print (msg)
             # Get 'ack' from Socket Server
             if msg=='ack':
                 clientSocket.send('ok'.encode('utf-8'))

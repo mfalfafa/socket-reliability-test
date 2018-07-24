@@ -54,7 +54,7 @@ def main(argv):
                         msg=connectionSocket[no].recv(32)
                         msg=msg.decode('ascii')
                         # Get data for each client
-                        client[no]==msg
+                        client[no]=msg
                     except:
                         print (name + ' is closed!')
                         connectionSocket[no].close()
