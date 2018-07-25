@@ -12,7 +12,7 @@ print ('-----------------------------\n')
 # Socket Server Initialization
 serverPort = 5000
 # Number of clients
-n=1
+n=5
 serverSocket = [socket(AF_INET, SOCK_STREAM)]*n
 serverIP = '192.168.20.50'
 for i in range(n):

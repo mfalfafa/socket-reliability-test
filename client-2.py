@@ -25,24 +25,24 @@ while 1:
                 break
         if e_f==1:
             e_f=0
-            break
-        all_data='%01$RD000030000389_' + str(n)
-        n=n+1
-        print (all_data)
-        clientSocket.send(all_data.encode('utf-8'))
-        while 1:
-            msg=clientSocket.recv(32)
-            msg=msg.decode('ascii')
-            # print (msg)
-            # Get 'ack' from Socket Server
-            if msg=='ack':
-                clientSocket.send('ok'.encode('utf-8'))
-                clientSocket.close()
-                break
-            elif msg=='closed':
-                print ('Socket Server is closed')
-                clientSocket.close()
-                break
+        else:
+            all_data='%01$RD000030000389_' + str(n)
+            n=n+1
+            print (all_data)
+            clientSocket.send(all_data.encode('utf-8'))
+            while 1:
+                msg=clientSocket.recv(32)
+                msg=msg.decode('ascii')
+                # print (msg)
+                # Get 'ack' from Socket Server
+                if msg=='ack':
+                    clientSocket.send('ok'.encode('utf-8'))
+                    clientSocket.close()
+                    break
+                elif msg=='closed':
+                    print ('Socket Server is closed')
+                    clientSocket.close()
+                    break
         print ('-----------------')
     except KeyboardInterrupt:
         break
