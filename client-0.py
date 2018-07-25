@@ -26,7 +26,7 @@ while 1:
         if e_f==1:
             e_f=0
         else:
-            all_data='%01$RD000030000389_' + str(n)
+            all_data='%00$RD000030000389_' + str(n)
             n=n+1
             print (all_data)
             clientSocket.send(all_data.encode('utf-8'))
