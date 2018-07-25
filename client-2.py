@@ -3,7 +3,7 @@
 from socket import *
 
 ## Client Socket Communication initialization
-serverIP = '169.254.148.241'    # PC Server IP
+serverIP = '192.168.20.50'    # PC Server IP
 serverPort = 5002               # PC Server Port
 
 n=0

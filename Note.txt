@@ -35,3 +35,41 @@
 2. Boot all raspi3s
 3. And data from all raspi3s will be received by PC server.
 
+### Setting up Raspi 3 for static Wlan and Ethernet
+*=== in File : /etc/network/interfaces ===
+
+# For Wlan0
+auto wlan0
+
+iface lo inet loopback
+iface eth0 inet dhcp
+
+allow-hotplug wlan0
+iface wlan0 inet static
+address 192.168.1.155
+netmask 255.255.255.0
+gateway 192.168.1.1
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp
+
+# For ethernet
+auto eth0
+allow-hotplug eth0
+iface eth0 inet static
+address 192.168.20.100
+netmask 255.255.255.0
+
+*=== in File : /etc/wpa_supplicant/wpa_supplicant.conf ===
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+ssid="Machine Vision"
+psk="cantiksekali"
+proto=RSN
+key_mgmt=WPA-PSK
+pairwise=CCMP
+auth_alg=OPEN
+}
+

@@ -14,10 +14,12 @@ Software Rquirements :
 
 Configurations: 
 For this testing, there are 5 Raspi3s :
-1. Raspi 1 -> Client-1
-2. Raspi 2 -> Client-2
-3. Raspi 3 -> Client-3
-4. Raspi 4 -> Client-4
-5. Raspi 5 -> Client-5
+1. Raspi 1 -> Client-0 (Wlan:192.168.10.100, Eth0:192.168.20.10)
+2. Raspi 2 -> Client-1 (Wlan:192.168.10.101, Eth0:192.168.20.11)
+3. Raspi 3 -> Client-2 (Wlan:192.168.10.102, Eth0:192.168.20.12)
+4. Raspi 4 -> Client-3 (Wlan:192.168.10.103, Eth0:192.168.20.13)
+5. Raspi 5 -> Client-4 (Wlan:192.168.10.104, Eth0:192.168.20.14)
+
+PC Server (Eth:192.168.20.50)
 
 the 5 Raspi3s are connected to a switch using RJ45 Cable. Computer PC is also connected to same switch.
