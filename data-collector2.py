@@ -50,9 +50,6 @@ def main(argv):
     def sockData( name, serverSocket, port, no):
         try:
             while 1:
-                # Clear zero flag
-                zero_f=0
-                
                 # Accept connection from client
                 connectionSocket[no], addr = serverSocket.accept()
                 #print(connectionSocket.getpeername())
@@ -88,7 +85,7 @@ def main(argv):
                     if que[i][0]==0:
                         zero_f=1
                     else:
-                        print (que)
+                        # print (que)
                         client[i]=que[i][0]
                 if zero_f==0:
                     # Shift operation in queue
@@ -104,6 +101,7 @@ def main(argv):
                     for i in range(n):
                         client[i]=0
                 else :
+                    zero_f=0
                     print ('Not all data are received!')
         except KeyboardInterrupt:
             pass

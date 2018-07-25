@@ -73,3 +73,5 @@ pairwise=CCMP
 auth_alg=OPEN
 }
 
+Note : for OS
+Using Raspbian Jessie is faster than using Raspbian Jessie Lite Version !

@@ -7,6 +7,7 @@ serverIP = '192.168.20.50'    # PC Server IP
 serverPort = 5004               # PC Server Port
 
 n=0
+e_f=0
 while 1:
     i=0
     while i <= 50000:
@@ -19,7 +20,12 @@ while 1:
                 clientSocket.connect((serverIP, serverPort))
                 break
             except Exception as e:
+                e_f=1
                 print ('error : '+ str(e))
+                break
+        if e_f==1:
+            e_f=0
+            break
         all_data='%01$RD000030000389_' + str(n)
         n=n+1
         print (all_data)
@@ -42,7 +48,7 @@ while 1:
         break
     except Exception as e:
         print ('Error : '+ str(e))
-        break
+        # break
 
 print ("Connection is closed!")
 clientSocket.send('ok'.encode('utf-8'))
