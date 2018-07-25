@@ -1,0 +1,2 @@
+Problems while testing :
+1. If RJ45 Cable is disconnected between Raspi and PC Server and then reconnected, then the client must be restarted to make a connection to PC Server. Expectation : The client should not be restarted to make a connection to PC Server. (Solved)
