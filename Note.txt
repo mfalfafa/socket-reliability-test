@@ -21,7 +21,7 @@
 
 	b. Edit "Profile" file :
 	"sudo nano /etc/profile"
-	And add the following command 	: sudo python /home/pi/socket-reliability-test/client-x.py.
+	And add the following command 	: sudo python3 /home/pi/socket-reliability-test/client-x.py.
 	Edit "Profile" file per each raspi.
 
 5. sudo reboot now. After reboot the client-x python file will be executed automatically.

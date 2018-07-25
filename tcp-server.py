@@ -4,6 +4,11 @@ import threading
 import sys
 from socket import *
 
+print ('*** Data Colector v1.0 ***')
+print ('*** miftahf77@gmail.com ***')
+print ('*** 24 July 2018 ***')
+print ('-----------------------------\n')
+
 # Socket Server Initialization
 serverPort = 5000
 # Number of clients
@@ -15,7 +20,8 @@ for i in range(n):
     serverSocket[i].setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
     serverSocket[i].bind((serverIP,serverPort + i))
     serverSocket[i].listen(1)
-    print ('success ' + str(i))
+    #print ('success ' + str(i))
+print ('Number of client : ' + str(n))
 connectionSocket=[0]*n
 thread=[0]*n
 
@@ -31,7 +37,7 @@ def main(argv):
           self.port = port
           self.no = no
        def run(self):
-          print (self.name + ' is ready.\n')
+          print ('Port : '+ str(self.port)+ ' for '+ self.name + ' is ready.\n')
           sockData(self.name, self.serverSocket, self.port, self.no)
           
     def sockData( name, serverSocket, port, no):
@@ -40,12 +46,14 @@ def main(argv):
                 # Accept connection from client
                 connectionSocket[no], addr = serverSocket.accept()
                 #print(connectionSocket.getpeername())
-                print (name + ' , Port : ' + str(port))
+                #print (name + ' , Port : ' + str(port))
 
                 # Receives data message from Socket Client
                 msg=connectionSocket[no].recv(1024)
                 msg=msg.decode('ascii')
                 # print (msg)
+                # Get data for each client
+                client[no]=msg
 
                 # Sends ACK message to Client
                 connectionSocket[no].send('ack'.encode('utf-8'))
@@ -53,8 +61,6 @@ def main(argv):
                     try:
                         msg=connectionSocket[no].recv(32)
                         msg=msg.decode('ascii')
-                        # Get data for each client
-                        client[no]=msg
                     except:
                         print (name + ' is closed!')
                         connectionSocket[no].close()
