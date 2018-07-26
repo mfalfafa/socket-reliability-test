@@ -15,7 +15,7 @@ serverPort = 5000
 # Number of clients
 n=5
 serverSocket = [socket(AF_INET, SOCK_STREAM)]*n
-serverIP = '192.168.20.50'
+serverIP = '192.168.10.250'
 for i in range(n):
     serverSocket[i]=socket(AF_INET, SOCK_STREAM)
     serverSocket[i].setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
@@ -89,7 +89,7 @@ def main(argv):
             time.sleep(1)
             data=''
             for i in range(n):
-                data=data+client[i]+','
+                data=data+str(client[i])
             data='{'+data+'}'
             try:
                 mqttc.publish("ev_second",data,0);

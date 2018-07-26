@@ -33,7 +33,7 @@ mqttc.on_subscribe = on_subscribe
 # mqttc.on_log = on_log
 mqttc.connect("192.168.10.151", 1883, 60)
 # subscribe data that is received from photon particle
-# mqttc.subscribe("ev_second", 1)
+mqttc.subscribe("ev_second", 0)
 # mqttc.subscribe("downtime")
 
 while 1:
