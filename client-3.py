@@ -37,7 +37,7 @@ while 1:
             sen_data=''
             for i in range(sensorNo):
                 sen_data=sen_data+sen[i]+','
-            all_data='"'+'line'+str(line)+'":{"line":'+str(line)+','+ sen_data + '"ts":'+str(time.time())+'}'
+            all_data='"'+'line'+str(line)+'":{"line":'+str(line)+','+ sen_data + '"ts":'+str(time.time())+'},'
             
             # all_data='%03$RD000030000389_' + str(n)
             # n=n+1
