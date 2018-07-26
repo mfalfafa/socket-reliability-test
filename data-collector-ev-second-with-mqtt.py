@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import paho.mqtt.client as mqtt
 import threading
 import sys
 import time
@@ -33,6 +33,36 @@ client=[0]*n
 evSecThread=''
 buff=[0]*n
 
+#========= For MQTT ===========
+def on_connect(mqttc, obj, flags, rc):
+    print("rc: " + str(rc))
+    
+def on_message(mqttc, obj, msg):
+    #print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    msg_buff = msg.topic + " " + str(msg.qos) + " " + str(msg.payload)
+    msg_topic = msg.topic
+    print (msg_buff)
+    
+def on_publish(mqttc, obj, mid):
+    pass
+    #print("publish: " + str(mid))
+    
+def on_subscribe(mqttc, obj, mid, granted_qos):
+    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+    
+def on_log(mqttc, obj, level, string):
+    print(string)
+
+#MQTT Connection
+mqttc = mqtt.Client()
+mqttc.on_message = on_message
+mqttc.on_connect = on_connect
+mqttc.on_publish = on_publish
+mqttc.on_subscribe = on_subscribe
+# Uncomment to enable debug messages
+# mqttc.on_log = on_log
+mqttc.connect("192.168.10.151", 1883, 60)
+
 def main(argv):
     global client,evSecThread
     class myThread (threading.Thread):
@@ -54,19 +84,17 @@ def main(argv):
 
     # Sending data every second
     def sendData():
-        global collector,buff,n
-        buff2=[0]*n
-        data_ev_sec=[0]*n
+        global collector,buff,n,client
         while 1:
             time.sleep(1)
+            data=''
             for i in range(n):
-                data_ev_sec[i]=buff[i]-buff2[i]
-                buff2[i]=buff[i]
-                # Overflow Checking
-                if buff[i]>=5000000:
-                    buff[i]=0
-                    buff2[i]=0
-            print (data_ev_sec)
+                data=data+client[i]+','
+            data='{'+data+'}'
+            try:
+                mqttc.publish("ev_second",data,0);
+            except:
+                print("There is an error on Sending Data!");
 
     # Get data from all clients
     def sockData( name, serverSocket, port, no):
@@ -85,7 +113,7 @@ def main(argv):
                 # Parsing msg
                 # Get data for each client
                 client[no]=msg
-                buff[no]=buff[no]+1
+                # buff[no]=buff[no]+1
 
                 # Sends ACK message to Client
                 connectionSocket[no].send('ack'.encode('utf-8'))
@@ -128,6 +156,7 @@ def main(argv):
     evSecThread.start()
     
     while 1:
+        mqttc.loop(timeout=0.001)
         pass
 
 if __name__=="__main__":
