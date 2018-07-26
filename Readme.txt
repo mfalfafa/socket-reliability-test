@@ -23,3 +23,10 @@ For this testing, there are 5 Raspi3s :
 PC Server (Eth:192.168.20.50)
 
 the 5 Raspi3s are connected to a switch using RJ45 Cable. Computer PC is also connected to same switch.
+
+Python script :
+For server : 
+	1. use "data-collector-queue.py" to send data based on queue (each data from all clients must be received and then sent together.)
+	2. use "data-collector-ev-second.py" to send data of each client every second, if there is no data, zero value will be sent to server.
+For clients :
+	1. use "client-0.py until client-4.py" to gather data from PLC and then sent to server.

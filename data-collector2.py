@@ -29,7 +29,7 @@ thread=[0]*n
 client=[0]*n
 
 # Variables for queue
-m=50    # Max queue of data
+m=1000    # Max queue of data
 que=[[0 for i in range(m)] for i in range(n)]
 inc=[0]*n
 zero_f=0

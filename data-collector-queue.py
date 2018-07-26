@@ -28,7 +28,15 @@ thread=[0]*n
 # Variables to save data for each client
 client=[0]*n
 
+# Variables for queue
+m=1000    # Max queue of data
+que=[[0 for i in range(m)] for i in range(n)]
+inc=[0]*n
+zero_f=0
+first_run_f=0
+
 def main(argv):
+    global m,que,inc,zero_f,client,first_run_f
     class myThread (threading.Thread):
        def __init__(self, name, serverSocket, port, no):
           threading.Thread.__init__(self)
@@ -41,6 +49,7 @@ def main(argv):
           sockData(self.name, self.serverSocket, self.port, self.no)
           
     def sockData( name, serverSocket, port, no):
+        global m,que,inc,zero_f,client,first_run_f
         try:
             while 1:
                 # Accept connection from client
@@ -53,7 +62,13 @@ def main(argv):
                 msg=msg.decode('ascii')
                 # print (msg)
                 # Get data for each client
-                client[no]=msg
+                if inc[no]==m:
+                    # Reset inc var for each client
+                    inc[no]=0
+                # client[no]=msg
+                que[no][inc[no]]=msg
+                if first_run_f==1:
+                    inc[no]=inc[no]+1
 
                 # Sends ACK message to Client
                 connectionSocket[no].send('ack'.encode('utf-8'))
@@ -68,7 +83,31 @@ def main(argv):
                     if msg=='ok':
                         connectionSocket[no].close()
                         break
-                print (client)
+                # Check if there is a zero value in data variable
+                for i in range(n):
+                    if que[i][0]==0:
+                        zero_f=1
+                    else:
+                        # print (que)
+                        client[i]=que[i][0]
+                if zero_f==0:
+                    # Shift operation in queue
+                    for i in range(n):
+                        inc[i]=inc[i]-1
+                        for j in range(m):
+                            if j<m-1:
+                                que[i][j]=que[i][j+1]
+                            elif j==m-1:
+                                que[i][j]=0
+                    print (client)
+                    # Make zero data variable
+                    for i in range(n):
+                        client[i]=0
+                    first_run_f=1
+                else :
+                    zero_f=0
+                    if first_run_f==1:
+                        print ('Not all data are received!')
         except KeyboardInterrupt:
             pass
         except Exception as e:
@@ -96,3 +135,7 @@ if __name__=="__main__":
         pass
     except Exception as e:
         print (str(e))
+
+
+# Note :
+# For this data collector script will use queue to send all data a once. So the system will wait untill all data is received by buffer and then will send all data received at once.
