@@ -42,7 +42,8 @@ while 1:
     time1=time1+1
     if time1 >= 5000000:   #Send data to billboard every second
         try:
-            mqttc.publish("ev_second",'data',0);
+            pass
+            #mqttc.publish("ev_second",'data',0);
         except:
             print("There is an error on Sending Data!");
         time1=0

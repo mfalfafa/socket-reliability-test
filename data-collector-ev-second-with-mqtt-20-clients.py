@@ -1,0 +1,172 @@
+#!/usr/bin/python
+import paho.mqtt.client as mqtt
+import threading
+import sys
+import time
+from socket import *
+
+print ('*** Data Colector v1.0 ***')
+print ('*** miftahf77@gmail.com ***')
+print ('*** 24 July 2018 ***')
+print ('-----------------------------\n')
+
+# Socket Server Initialization
+serverPort = 5000
+# Number of clients
+n=20
+serverSocket = [socket(AF_INET, SOCK_STREAM)]*n
+serverIP = '192.168.10.250'
+for i in range(n):
+    serverSocket[i]=socket(AF_INET, SOCK_STREAM)
+    serverSocket[i].setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    serverSocket[i].bind((serverIP,serverPort + i))
+    serverSocket[i].listen(1)
+    #print ('success ' + str(i))
+print ('Number of client : ' + str(n))
+connectionSocket=[0]*n
+thread=[0]*n
+
+# Variables to save data for each client
+client=[0]*n
+
+# for sending data ev second
+evSecThread=''
+buff=[0]*n
+
+#========= For MQTT ===========
+def on_connect(mqttc, obj, flags, rc):
+    print("rc: " + str(rc))
+    
+def on_message(mqttc, obj, msg):
+    #print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    msg_buff = msg.topic + " " + str(msg.qos) + " " + str(msg.payload)
+    msg_topic = msg.topic
+    print (msg_buff)
+    
+def on_publish(mqttc, obj, mid):
+    pass
+    #print("publish: " + str(mid))
+    
+def on_subscribe(mqttc, obj, mid, granted_qos):
+    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+    
+def on_log(mqttc, obj, level, string):
+    print(string)
+
+#MQTT Connection
+mqttc = mqtt.Client()
+mqttc.on_message = on_message
+mqttc.on_connect = on_connect
+mqttc.on_publish = on_publish
+mqttc.on_subscribe = on_subscribe
+# Uncomment to enable debug messages
+# mqttc.on_log = on_log
+mqttc.connect("192.168.10.151", 1883, 60)
+
+def main(argv):
+    global client,evSecThread
+    class myThread (threading.Thread):
+       def __init__(self, name, serverSocket, port, no):
+          threading.Thread.__init__(self)
+          self.name = name
+          self.serverSocket = serverSocket
+          self.port = port
+          self.no = no
+       def run(self):
+          print ('Port : '+ str(self.port)+ ' for '+ self.name + ' is ready.\n')
+          sockData(self.name, self.serverSocket, self.port, self.no)
+          
+    class evSecondThread(threading.Thread):
+        def __init__(self):
+            threading.Thread.__init__(self)
+        def run(self):
+            sendData()
+
+    # Sending data every second
+    def sendData():
+        global collector,buff,n,client
+        while 1:
+            time.sleep(1)
+            data=''
+            for i in range(n):
+                data=data+str(client[i])
+            data='{'+data+'}'
+            try:
+                mqttc.publish("ev_second",data,0);
+            except:
+                print("There is an error on Sending Data!");
+
+    # Get data from all clients
+    def sockData( name, serverSocket, port, no):
+        global client,buff
+        try:
+            while 1:
+                # Accept connection from client (blocking mode)
+                connectionSocket[no], addr = serverSocket.accept()
+                #print(connectionSocket.getpeername())
+                #print (name + ' , Port : ' + str(port))
+            
+                # Receives data message from Socket Client
+                msg=connectionSocket[no].recv(1024)
+                msg=msg.decode('ascii')
+                print (msg)
+                # Parsing msg
+                # Get data for each client
+                client[no]=msg
+                # buff[no]=buff[no]+1
+
+                # Sends ACK message to Client
+                connectionSocket[no].send('ack'.encode('utf-8'))
+                while 1:
+                    try:
+                        msg=connectionSocket[no].recv(32)
+                        msg=msg.decode('ascii')
+                    except:
+                        print (name + ' is closed!')
+                        connectionSocket[no].close()
+                        break
+                    if msg=='ok':
+                        connectionSocket[no].close()
+                        break
+        except KeyboardInterrupt:
+            pass
+        except Exception as e:
+            print (str(e))
+
+    # Create new threads
+    try:
+        for i in range(n):
+            name="Client-"+str(i)
+            thread[i] = myThread(name, serverSocket[i], serverPort+i, i)
+    except Exception as e:
+            print ("Error: unable to start thread!")
+            print (str(e))
+
+    # Create new thread for sending data every second
+    try:
+        evSecThread=evSecondThread()
+    except Exception as e:
+        print ("Error: unable to start thread!")
+        print (str(e))
+
+    # Start new Threads
+    for i in range(n):
+        thread[i].start()
+    # Start new thread for sending data ev second
+    evSecThread.start()
+    
+    while 1:
+        mqttc.loop(timeout=0.001)
+        pass
+
+if __name__=="__main__":
+    try:
+        main(sys.argv)
+    except KeyboardInterrupt:
+        pass
+    except Exception as e:
+        print (str(e))
+
+
+# Note :
+# For this data collector script will send data at every second, doesn't matter if all data are received or not.
