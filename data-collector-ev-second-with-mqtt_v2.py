@@ -3,12 +3,19 @@ import paho.mqtt.client as mqtt
 import threading
 import sys
 import time
+import Rpi.GPIO as GPIO
 from socket import *
 
 print ('*** Data Colector v1.0 ***')
 print ('*** miftahf77@gmail.com ***')
 print ('*** 24 July 2018 ***')
 print ('-----------------------------\n')
+
+# Indicator pin initialization
+indicator_pin=25
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(indicator_pin, GPIO.OUT)
+GPIO.output(indicator_pin, 0)
 
 # Socket Server Initialization
 serverPort = 5000
@@ -27,9 +34,9 @@ while 1:    # Looping until the configurations in server-forwarder is ready
             #print ('success ' + str(i))
         ready_f=1
     except:
-        print ('Your IP Address is not same !')
+        print ('Your IP Address is incorrect, please setting your IP!')
         print ('Trying to reconnect to IP Host...')
-        time.sleep(3)
+        time.sleep(1)
     if ready_f==1:
         break
 print ('Number of client : ' + str(n))
@@ -71,8 +78,21 @@ mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
-mqttc.connect("192.168.10.151", 1883, 60)
-
+ready_f=0
+while 1:    # Looping until the Server is ready   
+    try:
+        mqttc.connect("192.168.10.151", 1883, 60)
+        ready_f=1
+    except:
+        print ('Waiting for the server...')
+        time.sleep(1)
+    if ready_f==1:
+        break
+    
+# If All configuration is ready, then set indicator led to on
+if ready_f == 1:
+    GPIO.output(indicator_pin, 1)
+    
 def main(argv):
     global client,evSecThread
     class myThread (threading.Thread):

@@ -31,7 +31,16 @@ mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
-mqttc.connect("192.168.10.151", 1883, 60)
+ready_f=0
+while 1:    
+    try:
+        mqttc.connect("192.168.10.151", 1883, 60)
+        ready_f=1
+    except:
+        print ('Waiting for the server...')
+        time.sleep(3)
+    if ready_f==1:
+        break
 # subscribe data that is received from photon particle
 mqttc.subscribe("ev_second", 0)
 # mqttc.subscribe("downtime")
