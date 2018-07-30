@@ -34,8 +34,7 @@ while 1:    # Looping until the configurations in server-forwarder is ready
             #print ('success ' + str(i))
         ready_f=1
     except:
-        print ('Your IP Address is incorrect, please setting your IP!')
-        print ('Trying to reconnect to IP Host...')
+        print ('Your IP Address for socket protocol is incorrect, please setting your IP!')        
         time.sleep(1)
     if ready_f==1:
         break
