@@ -70,12 +70,26 @@ def on_subscribe(mqttc, obj, mid, granted_qos):
 def on_log(mqttc, obj, level, string):
     print(string)
 
+def on_disconnect(client, userdata, rc):
+    print ('Problem : '+ str(rc))
+    # Trying to reconnect to the server
+    ready_f=0
+    while 1:
+        try:
+            mqttc.connect("192.168.10.151", 1883, 60)
+            ready_f=1
+        except:
+            print ('Trying to reconnect to the server...')
+        if ready_f==1:
+            break
+
 #MQTT Connection
 mqttc = mqtt.Client()
 mqttc.on_message = on_message
 mqttc.on_connect = on_connect
 mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
+mqttc.on_disconnect = on_disconnect
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
 ready_f=0
