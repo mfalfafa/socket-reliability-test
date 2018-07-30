@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 import threading
 import sys
 import time
-import Rpi.GPIO as GPIO
+import RPi.GPIO as GPIO
 from socket import *
 
 print ('*** Data Colector v1.0 ***')

@@ -38,7 +38,7 @@ while 1:
         ready_f=1
     except:
         print ('Waiting for the server...')
-        time.sleep(3)
+        time.sleep(1)
     if ready_f==1:
         break
 # subscribe data that is received from photon particle
