@@ -17,9 +17,8 @@ from socket import *
 
 ## Client Socket Communication initialization
 serverIP = '192.168.10.250'    # PC Server IP
-serverPort = 5000               # PC Server Port
+serverPort = 5001               # PC Server Port
 # line settings ++++++++
-line=1
 sensorNo=15
 sen=[0]*15
 line=1
@@ -175,6 +174,7 @@ while 1:
                                 else:
                                     # ++++++
                                     for i in range(sensorNo):
+                                        # Add Sensor 1 to 14 here, sensor numb. 15 in Server Forwarder. Parsing data from PLC here !
                                         sen[i]='"s'+str(i+1)+'":'+str(random.randint(1,21))
                                     sen_data=''
                                     for i in range(sensorNo):

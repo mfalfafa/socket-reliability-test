@@ -102,7 +102,7 @@ def main(argv):
                 data=data+str(client[i])
             data='{'+data+'}'
             try:
-                mqttc.publish("ev_second",data,0);
+                mqttc.publish("ev_second",data.encode('utf-8'),0);
             except:
                 print("There is an error on Sending Data!");
 
