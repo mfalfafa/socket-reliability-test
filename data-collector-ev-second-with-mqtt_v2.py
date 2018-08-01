@@ -19,7 +19,7 @@ GPIO.output(indicator_pin, 0)
 
 # Socket Server Initialization
 # Start port for clients
-serverPort = 5000
+serverPort = 4999
 # Number of clients
 n=5
 serverSocket = [socket(AF_INET, SOCK_STREAM)]*n
@@ -136,7 +136,7 @@ def main(argv):
                 data=data+str(client[i])
             data='{'+data+'}'
             try:
-                mqttc.publish("ev_second",data.encode('ascii'),0)
+                mqttc.publish("ev_second",data,0)
             except:
                 print("There is an error on Sending Data!");
 
