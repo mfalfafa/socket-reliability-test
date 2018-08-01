@@ -132,7 +132,7 @@ def main(argv):
         while 1:
             time.sleep(1)
             data=''
-            for i in range(n):
+            for i in range(n-1):
                 data=data+str(client[i])
             data='{'+data+'}'
             try:
