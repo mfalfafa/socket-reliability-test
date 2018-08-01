@@ -19,7 +19,7 @@ GPIO.output(indicator_pin, 0)
 
 # Socket Server Initialization
 # Start port for clients
-serverPort = 5001
+serverPort = 5000
 # Number of clients
 n=5
 serverSocket = [socket(AF_INET, SOCK_STREAM)]*n
